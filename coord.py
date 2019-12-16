@@ -1,6 +1,7 @@
-from numpy import sin, cos, tan, log, sqrt, abs
+from numpy import sin, cos, tan, log, sqrt, abs, e
 from scipy import optimize
 from sympy import *
+import math
 
 
 def find_min(function, x1_start, x2_start, Eps=0.001):
@@ -27,14 +28,11 @@ def find_min(function, x1_start, x2_start, Eps=0.001):
             switcher = True
             k += 1
         if k % 2 == 0:
-            if sqrt((x1_const - x1_old) ** 2 + (x2_const - x2_old) ** 2) < Eps:
+            if math.sqrt((x1_const - x1_old) ** 2 + (x2_const - x2_old) ** 2) < Eps:
                 break
             else:
                 x1_old = x1_const
                 x2_old = x2_const
     x1 = x1_const
     x2 = x2_const
-    return round(x1, 5), round(x2, 5), round(eval(function), 5)
-
-
-print(find_min('4*x1^2+4*x1*x2+6*x2^2-17*x1', 0, 0))
+    return x1, x2, eval(function)

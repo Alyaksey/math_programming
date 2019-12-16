@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import QLabel, QWidget, QTabWidget, QVBoxLayout, \
     QLineEdit, QPushButton, QHBoxLayout, QTextEdit, QMessageBox
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
+import coord
+import gradient
 import plotter
 
 
@@ -65,6 +67,7 @@ class MyTableWidget(QWidget):
         self.hbox.addWidget(self.textbox3)
         self.solve_button = QPushButton('Решить')
         self.show_button.pressed.connect(self.show_plot)
+        self.solve_button.pressed.connect(self.fill_text_boxes)
         self.tab4.layout.addWidget(self.label3, 0, Qt.AlignTop)
         self.tab4.layout.addWidget(self.textbox4)
         self.tab4.layout.addWidget(self.label4)
@@ -87,10 +90,46 @@ class MyTableWidget(QWidget):
         function = self.textbox1.text()
         try:
             plotter.plot(function)
+        except (SyntaxError, AttributeError, NameError, ValueError):
+            msg = QMessageBox()
+            msg.setWindowTitle('Ошибка')
+            msg.setText('Функция введена неправильно')
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+
+    def fill_text_boxes(self):
+        try:
+            x1, x2, f = coord.find_min(self.textbox1.text(), float(self.textbox2.text()), float(self.textbox3.text()))
+            self.textbox4.setReadOnly(False)
+            self.textbox4.setText('x1 = {}\nx2 = {}\nfmin = {}'.format(x1, x2, f))
+            self.textbox4.setReadOnly(True)
+            x1, x2, f = gradient.find_min(self.textbox1.text(), float(self.textbox2.text()),
+                                          float(self.textbox3.text()))
+            self.textbox5.setReadOnly(False)
+            self.textbox5.setText('x1 = {}\nx2 = {}\nfmin = {}'.format(x1, x2, f))
+            self.textbox5.setReadOnly(True)
         except (SyntaxError, AttributeError, NameError):
             msg = QMessageBox()
             msg.setWindowTitle('Ошибка')
             msg.setText('Функция введена неправильно')
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+        except ValueError:
+            msg = QMessageBox()
+            msg.setWindowTitle('Ошибка')
+            msg.setText('Введите начальные координаты')
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+        except OverflowError:
+            msg = QMessageBox()
+            msg.setWindowTitle('Ошибка')
+            msg.setText('Подберите другие начальные координаты')
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+        except RuntimeError:
+            msg = QMessageBox()
+            msg.setWindowTitle('Ошибка')
+            msg.setText('Невозможно вычислить')
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
 

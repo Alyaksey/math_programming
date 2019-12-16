@@ -13,8 +13,8 @@ def make_data(function):
         x = numpy.arange(-1, 1, 0.1)
         y = numpy.arange(-1, 1, 0.1)
     else:
-        x = numpy.arange(-50, 50, 0.1)
-        y = numpy.arange(-50, 50, 0.1)
+        x = numpy.arange(-100, 100, 0.1)
+        y = numpy.arange(-100, 100, 0.1)
     xgrid, ygrid = numpy.meshgrid(x, y)
     function = function.replace('^', '**').replace('x1', 'xgrid').replace('x2', 'ygrid').replace('ln', 'log')
     zgrid = eval(function)
