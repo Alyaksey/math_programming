@@ -18,7 +18,7 @@ class App(QMainWindow):
         super().__init__()
         self.title = 'Решение задачи безусловной оптимизации функций многих переменных'
         self.setWindowTitle(self.title)
-        self.resize(900, 720)
+        self.resize(800, 600)
         self.table_widget = MyTableWidget(self)
         self.setCentralWidget(self.table_widget)
         self.show()
@@ -33,61 +33,61 @@ class MyTableWidget(QWidget):
     def initUI(self):
         self.layout = QVBoxLayout(self)
         self.tabs = QTabWidget()
-        self.tab1 = QWidget()
-        self.tab2 = QWidget()
-        self.tab3 = QWidget()
-        self.tab4 = QWidget()
-        self.tabs.addTab(self.tab1, "Краткая справка")
-        self.tabs.addTab(self.tab2, "Теория")
-        self.tabs.addTab(self.tab3, "Литература")
-        self.tabs.addTab(self.tab4, "Решение")
-        self.tab1.layout = QVBoxLayout(self)
-        self.tab2.layout = QVBoxLayout(self)
-        self.tab3.layout = QVBoxLayout(self)
-        self.tab4.layout = QVBoxLayout(self)
-        self.label1 = QLabel('Введите уравнение:')
-        self.label2 = QLabel('Начальные координаты:')
-        self.label3 = QLabel('Циклический покоординатный спуск:')
-        self.label4 = QLabel('Наискорейший спуск:')
-        self.textbox1 = QLineEdit()
+        self.info_tab = QWidget()
+        self.theory_tab = QWidget()
+        self.lit_tab = QWidget()
+        self.solve_tab = QWidget()
+        self.tabs.addTab(self.info_tab, "Краткая справка")
+        self.tabs.addTab(self.theory_tab, "Теория")
+        self.tabs.addTab(self.lit_tab, "Литература")
+        self.tabs.addTab(self.solve_tab, "Решение")
+        self.info_tab.layout = QVBoxLayout(self)
+        self.theory_tab.layout = QVBoxLayout(self)
+        self.lit_tab.layout = QVBoxLayout(self)
+        self.solve_tab.layout = QVBoxLayout(self)
+        self.function_label = QLabel('Введите функции:')
+        self.coords_label = QLabel('Начальные координаты:')
+        self.coord_desc_label = QLabel('Циклический покоординатный спуск:')
+        self.grad_desc_label = QLabel('Наискорейший спуск:')
+        self.function_textbox = QLineEdit()
         self.show_button = QPushButton('Показать график')
         self.hbox = QHBoxLayout()
-        self.textbox2 = QLineEdit()
-        self.textbox2.setPlaceholderText('x1')
-        self.textbox2.setFixedWidth(30)
-        self.textbox3 = QLineEdit()
-        self.textbox4 = QTextEdit()
-        self.textbox5 = QTextEdit()
-        self.textbox4.setReadOnly(True)
-        self.textbox5.setReadOnly(True)
-        self.textbox3.setPlaceholderText('x2')
-        self.textbox3.setFixedWidth(30)
-        self.hbox.addWidget(self.label2, 0, Qt.AlignRight)
-        self.hbox.addWidget(self.textbox2)
-        self.hbox.addWidget(self.textbox3)
+        self.x1_textbox = QLineEdit()
+        self.x1_textbox.setPlaceholderText('x1')
+        self.x1_textbox.setFixedWidth(30)
+        self.x2_textbox = QLineEdit()
+        self.coord_desc_textbox = QTextEdit()
+        self.grad_desc_textbox = QTextEdit()
+        self.coord_desc_textbox.setReadOnly(True)
+        self.grad_desc_textbox.setReadOnly(True)
+        self.x2_textbox.setPlaceholderText('x2')
+        self.x2_textbox.setFixedWidth(30)
+        self.hbox.addWidget(self.coords_label, 0, Qt.AlignRight)
+        self.hbox.addWidget(self.x1_textbox)
+        self.hbox.addWidget(self.x2_textbox)
         self.solve_button = QPushButton('Решить')
         self.show_button.pressed.connect(self.show_plot)
         self.solve_button.pressed.connect(self.fill_text_boxes)
-        self.tab4.layout.addWidget(self.label3, 0, Qt.AlignTop)
-        self.tab4.layout.addWidget(self.textbox4)
-        self.tab4.layout.addWidget(self.label4)
-        self.tab4.layout.addWidget(self.textbox5)
-        self.tab4.layout.addWidget(self.label1, 0, Qt.AlignBottom)
-        self.tab4.layout.addWidget(self.textbox1)
-        self.tab4.layout.addWidget(self.show_button)
-        self.tab4.layout.addLayout(self.hbox)
-        self.tab4.layout.addWidget(self.solve_button)
-        self.tab1.layout.addWidget(InfoTab())
-        self.tab2.layout.addWidget(TheoryTab())
-        self.tab3.layout.addWidget(LiteratureTab())
-        self.tab1.setLayout(self.tab1.layout)
-        self.tab2.setLayout(self.tab2.layout)
-        self.tab3.setLayout(self.tab3.layout)
-        self.tab4.setLayout(self.tab4.layout)
+        self.solve_tab.layout.addWidget(self.coord_desc_label, 0, Qt.AlignTop)
+        self.solve_tab.layout.addWidget(self.coord_desc_textbox)
+        self.solve_tab.layout.addWidget(self.grad_desc_label)
+        self.solve_tab.layout.addWidget(self.grad_desc_textbox)
+        self.solve_tab.layout.addWidget(self.function_label, 0, Qt.AlignBottom)
+        self.solve_tab.layout.addWidget(self.function_textbox)
+        self.solve_tab.layout.addWidget(self.show_button)
+        self.solve_tab.layout.addLayout(self.hbox)
+        self.solve_tab.layout.addWidget(self.solve_button)
+        self.info_tab.layout.addWidget(Tab('/info.html'))
+        self.theory_tab.layout.addWidget(Tab('/doc.pdf'))
+        self.lit_tab.layout.addWidget(Tab('/lit.pdf'))
+        self.info_tab.setLayout(self.info_tab.layout)
+        self.theory_tab.setLayout(self.theory_tab.layout)
+        self.lit_tab.setLayout(self.lit_tab.layout)
+        self.solve_tab.setLayout(self.solve_tab.layout)
         self.layout.addWidget(self.tabs)
 
     def show_plot(self):
-        function = self.textbox1.text()
+        function = self.function_textbox.text()
         try:
             plotter.plot(function)
         except (SyntaxError, AttributeError, NameError, ValueError):
@@ -99,65 +99,45 @@ class MyTableWidget(QWidget):
 
     def fill_text_boxes(self):
         try:
-            x1, x2, f = coord.find_min(self.textbox1.text(), float(self.textbox2.text()), float(self.textbox3.text()))
-            self.textbox4.setReadOnly(False)
-            self.textbox4.setText('x1 = {}\nx2 = {}\nfmin = {}'.format(x1, x2, f))
-            self.textbox4.setReadOnly(True)
-            x1, x2, f = gradient.find_min(self.textbox1.text(), float(self.textbox2.text()),
-                                          float(self.textbox3.text()))
-            self.textbox5.setReadOnly(False)
-            self.textbox5.setText('x1 = {}\nx2 = {}\nfmin = {}'.format(x1, x2, f))
-            self.textbox5.setReadOnly(True)
+            x1, x2, f = coord.find_min(self.function_textbox.text(), float(self.x1_textbox.text()),
+                                       float(self.x2_textbox.text()))
+            self.coord_desc_textbox.setReadOnly(False)
+            self.coord_desc_textbox.clear()
+            self.coord_desc_textbox.setText('x1 = {}\nx2 = {}\nfmin = {}'.format(x1.__str__().rstrip('0').rstrip(','),
+                                                                                 x2.__str__().rstrip('0').rstrip('.'),
+                                                                                 f.__str__().rstrip('0').rstrip('.')))
+            self.coord_desc_textbox.setReadOnly(True)
+            dx1, dx2, x1, x2, f = gradient.find_min(self.function_textbox.text(), float(self.x1_textbox.text()),
+                                                    float(self.x2_textbox.text()))
+            self.grad_desc_textbox.setReadOnly(False)
+            self.grad_desc_textbox.clear()
+            self.grad_desc_textbox.setText(
+                'dx1 = {}\ndx2={}\nx1 = {}\nx2 = {}\nfmin = {}'.format(dx1, dx2, x1.__str__().rstrip('0').rstrip(','),
+                                                                       x2.__str__().rstrip('0').rstrip('.'),
+                                                                       f.__str__().rstrip('0').rstrip('.')))
+            self.grad_desc_textbox.setReadOnly(True)
         except (SyntaxError, AttributeError, NameError):
-            msg = QMessageBox()
-            msg.setWindowTitle('Ошибка')
-            msg.setText('Функция введена неправильно')
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
+            self.show_error('Введите правильно функцию')
         except ValueError:
-            msg = QMessageBox()
-            msg.setWindowTitle('Ошибка')
-            msg.setText('Введите начальные координаты')
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
+            self.show_error('Введите начальные координаты')
         except OverflowError:
-            msg = QMessageBox()
-            msg.setWindowTitle('Ошибка')
-            msg.setText('Подберите другие начальные координаты')
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
+            self.show_error('Подберите другие координаты')
         except RuntimeError:
-            msg = QMessageBox()
-            msg.setWindowTitle('Ошибка')
-            msg.setText('Невозможно вычислить')
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
+            self.show_error('Невозможно вычислить')
+
+    def show_error(self, message):
+        msg = QMessageBox()
+        msg.setWindowTitle('Ошибка')
+        msg.setText(message)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
 
 
-class InfoTab(QMainWindow):
-    def __init__(self):
+class Tab(QMainWindow):
+    def __init__(self, file_name):
         super(QMainWindow, self).__init__()
         self.browser = QWebEngineView()
-        url = os.getcwd().replace('\\', '/') + '/info.html'
-        self.browser.load(QUrl(url))
-        self.setCentralWidget(self.browser)
-
-
-class TheoryTab(QMainWindow):
-    def __init__(self):
-        super(QMainWindow, self).__init__()
-        self.browser = QWebEngineView()
-        url = os.getcwd().replace('\\', '/') + '/doc.pdf'
-        self.browser.settings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
-        self.browser.load(QUrl(url))
-        self.setCentralWidget(self.browser)
-
-
-class LiteratureTab(QMainWindow):
-    def __init__(self):
-        super(QMainWindow, self).__init__()
-        self.browser = QWebEngineView()
-        url = os.getcwd().replace('\\', '/') + '/lit.pdf'
+        url = os.getcwd().replace('\\', '/') + file_name
         self.browser.settings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
         self.browser.load(QUrl(url))
         self.setCentralWidget(self.browser)

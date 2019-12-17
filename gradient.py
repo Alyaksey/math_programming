@@ -1,7 +1,6 @@
 from numpy import sin, cos, tan, log, sqrt, abs, e
 from scipy import optimize
 from sympy import *
-from decimal import Decimal
 
 
 def find_min(function, x1_start, x2_start, Eps=0.001):
@@ -21,4 +20,6 @@ def find_min(function, x1_start, x2_start, Eps=0.001):
         x1 = x1.evalf(subs={l: res.x})
         x2 = x2.evalf(subs={l: res.x})
         k += 1
-    return x1, x2, eval(f)
+    return dx1.__str__().replace('**', '^').replace('ln', 'log'), dx2.__str__().replace('**', '^').replace('ln',
+                                                                                                           'log'), round(
+        x1, 5), round(x2, 5), round(eval(f), 5)

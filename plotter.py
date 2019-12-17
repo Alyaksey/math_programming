@@ -26,4 +26,7 @@ def plot(function):
     fig = pylab.figure()
     axes = Axes3D(fig)
     axes.plot_surface(x, y, z, cmap=cm.hot)
+    axes.set_xlabel('x1', fontsize=15)
+    axes.set_ylabel('x2', fontsize=15)
+    axes.set_zlabel('f(x)', fontsize=15)
     pylab.show()

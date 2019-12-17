@@ -35,4 +35,4 @@ def find_min(function, x1_start, x2_start, Eps=0.001):
                 x2_old = x2_const
     x1 = x1_const
     x2 = x2_const
-    return x1, x2, eval(function)
+    return round(x1, 5), round(x2, 5), round(eval(function), 5)
